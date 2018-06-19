@@ -1,0 +1,50 @@
+using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+
+namespace Emag_Homework
+{
+    [TestClass]
+    public class UnitTest1
+    {
+        [TestMethod]
+        public void TestMethod1()
+        {
+            IWebDriver driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://www.emag.bg");
+            IWebElement goToSite = driver.FindElement(By.XPath("/html/body/header/div/div[1]/a"));
+            goToSite.Click();
+            driver.Manage().Window.Maximize();
+            IWebElement search = driver.FindElement(By.Id("searchboxTrigger"));
+            
+            search.Clear();
+            search.Click();
+            search.SendKeys("Тостер Star-Light TS-800W");
+            search.SendKeys(Keys.Return);
+            driver.Manage().Window.Maximize();
+
+            
+
+
+            IWebElement buyThis = driver.FindElement(By.CssSelector("#card_grid > div:nth-child(1) > div.card > div > div.card-section-top > div.card-heading > a > div > img"));
+            buyThis.Click();
+
+            IWebElement element = driver.FindElement(By.CssSelector("#page-skin > div.container > div > div:nth-child(2) > div.col-sm-5.col-md-7.col-lg-7 > div > div > div.col-sm-12.col-md-6.col-lg-5 > form > div.product-highlight.product-page-actions > button.btn.btn-primary.btn-emag.btn-block.yeahIWantThisProduct.btn-xl.gtm_680klw.font-size-base"));
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", element);
+
+            element.Click();
+
+            driver.Navigate().Refresh();
+
+            driver.FindElement(By.CssSelector("#my_cart > span.visible-lg-inline")).Click();
+
+            
+            IWebElement tosterInfo = driver.FindElement(By.CssSelector("#vendorsContainer > div > div.cart-widget.cart-line > div > div.main-product-details-container.emg-right > div.line-item.line-item-main > div.main-product-title-container.emg-left > a"));
+            bool isElementDisplayed = tosterInfo.Displayed;
+
+            Assert.IsTrue(isElementDisplayed);
+        }
+    }
+}
